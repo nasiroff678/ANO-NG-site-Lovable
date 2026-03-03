@@ -11,6 +11,7 @@ import PartnershipSection from "@/components/PartnershipSection";
 import ParticipateSection from "@/components/ParticipateSection";
 import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const Index = () => {
   return (
@@ -28,6 +29,7 @@ const Index = () => {
       <ParticipateSection />
       <ContactSection />
       <FooterSection />
+      <ScrollToTop />
     </div>
   );
 };
