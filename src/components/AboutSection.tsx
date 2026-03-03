@@ -78,25 +78,6 @@ const AboutSection = () => {
           </motion.div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {facts.map((fact: any, i: number) => {
-            const IconComponent = iconMap[fact.icon] || FileText;
-            return (
-              <motion.div
-                key={fact.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="bg-card rounded-xl p-5 shadow-card border border-border text-center"
-              >
-                <IconComponent className="w-8 h-8 text-primary mx-auto mb-3" />
-                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mb-1">{fact.label}</p>
-                <p className="text-sm font-semibold text-foreground">{fact.value}</p>
-              </motion.div>
-            );
-          })}
-        </div>
       </div>
     </section>
   );

@@ -1,8 +1,17 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileDown, Shield, ChevronDown } from "lucide-react";
+import { FileDown, Shield, ChevronDown, Building2, FileText, MapPin, Landmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useContent } from "@/hooks/useContent";
+
+const iconMap: Record<string, any> = { FileText, Building2, MapPin, Landmark };
+
+const defaultFacts = [
+  { icon: "FileText", label: "ИНН", value: "0260996986" },
+  { icon: "Building2", label: "ОГРН", value: "1230200047230" },
+  { icon: "MapPin", label: "Адрес", value: "г. Дюртюли, ул. Ленина, д. 8, оф. 202" },
+  { icon: "Landmark", label: "Банк", value: "АО «АЛЬФА-БАНК»" },
+];
 
 const defaultBankDetails = [
   { label: "Полное наименование", value: "Автономная некоммерческая организация ЦЕНТР СОЦИАЛЬНОЙ ПОДДЕРЖКИ В ОБЛАСТИ ТУРИЗМА, ФИЗИЧЕСКОЙ КУЛЬТУРЫ И МАССОВОГО СПОРТА «НОВЫЕ ГОРИЗОНТЫ»" },
@@ -31,6 +40,8 @@ const DocumentsSection = () => {
   const documents = content?.documents || defaultDocs;
   const bankDetails = content?.bank_details || defaultBankDetails;
   const footerText = content?.footer_text || "Мы полностью открыты для Минюста, грантовых фондов и партнёров. Все документы предоставляются по запросу.";
+  const { content: aboutContent } = useContent('about');
+  const facts = aboutContent?.facts || defaultFacts;
 
   return (
     <section id="documents" className="py-20 md:py-28 bg-muted">
@@ -113,6 +124,25 @@ const DocumentsSection = () => {
             )}
           </AnimatePresence>
         </motion.div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+          {facts.map((fact: any, i: number) => {
+            const IconComponent = iconMap[fact.icon] || FileText;
+            return (
+              <motion.div
+                key={fact.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="bg-card rounded-xl p-5 shadow-card border border-border text-center"
+              >
+                <IconComponent className="w-8 h-8 text-primary mx-auto mb-3" />
+                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mb-1">{fact.label}</p>
+                <p className="text-sm font-semibold text-foreground">{fact.value}</p>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
