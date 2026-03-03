@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Building2, FileText, MapPin, Landmark } from "lucide-react";
+import { Building2, FileText, MapPin, Landmark, Smile, Tent, Route, Heart } from "lucide-react";
 import directorPhoto from "@/assets/director-photo.jpg";
 import { useContent } from "@/hooks/useContent";
 
@@ -78,6 +78,62 @@ const AboutSection = () => {
           </motion.div>
         </div>
 
+        {/* Impact Statistics Section */}
+        <div className="mt-16 sm:mt-24 grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
+          {[
+            {
+              number: "500+",
+              description: "Счастливых участников",
+              icon: Smile,
+              color: "text-orange"
+            },
+            {
+              number: "50+",
+              description: "Организованных походов",
+              icon: Tent,
+              color: "text-forest"
+            },
+            {
+              number: "10+",
+              description: "Уникальных маршрутов",
+              icon: Route,
+              color: "text-primary"
+            },
+            {
+              number: "100%",
+              description: "Безопасность детей",
+              icon: Heart,
+              color: "text-accent"
+            }
+          ].map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="relative group bg-card/50 backdrop-blur-sm hover:bg-card border border-border/50 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden"
+              >
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                <div className={`mx-auto w-12 h-12 mb-4 rounded-full bg-background flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500 ${stat.color}`}>
+                  <Icon className="w-6 h-6" />
+                </div>
+
+                <h4 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 group-hover:-translate-y-1 transition-transform duration-500">
+                  {stat.number}
+                </h4>
+
+                <p className="text-sm md:text-base text-muted-foreground font-medium">
+                  {stat.description}
+                </p>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
