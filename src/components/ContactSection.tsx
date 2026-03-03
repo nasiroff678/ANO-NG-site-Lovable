@@ -39,7 +39,7 @@ const ContactSection = () => {
   const phone = settingsMap.phone || "+7 (XXX) XXX-XX-XX";
   const email = settingsMap.email || "info@novye-gorizonty.ru";
   const maxLink = settingsMap.max_link || "https://max.ru";
-  const mapEmbedUrl = settingsMap.map_embed_url || "https://yandex.ru/map-widget/v1/?ll=56.010833%2C55.490000&z=14&pt=56.010833%2C55.490000%2Cpm2rdm";
+  const mapEmbedUrl = settingsMap.map_embed_url || "https://yandex.ru/map-widget/v1/?ll=54.866214%2C55.487168&z=16&pt=54.866214%2C55.487168%2Cpm2rdm";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
