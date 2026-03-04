@@ -76,6 +76,8 @@ const sectionFields: Record<string, { fields: FieldDef[]; arrays: ArrayDef[] }> 
                     { key: 'title', label: 'Название', type: 'text' as const },
                     { key: 'desc', label: 'Описание', type: 'textarea' as const },
                     { key: 'audience', label: 'Аудитория', type: 'text' as const },
+                    { key: 'startDate', label: 'Дата начала (напр. 15 июня)', type: 'text' as const },
+                    { key: 'endDate', label: 'Дата завершения (ГГГГ-ММ-ДД)', type: 'text' as const },
                     { key: 'image', label: 'Изображение', type: 'image' as const },
                 ],
             },
@@ -84,6 +86,7 @@ const sectionFields: Record<string, { fields: FieldDef[]; arrays: ArrayDef[] }> 
                 label: 'Ближайшие события',
                 fields: [
                     { key: 'date', label: 'Дата', type: 'text' as const },
+                    { key: 'endDate', label: 'Дата завершения (ГГГГ-ММ-ДД)', type: 'text' as const },
                     { key: 'title', label: 'Название', type: 'text' as const },
                     { key: 'location', label: 'Место', type: 'text' as const },
                 ],
