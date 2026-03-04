@@ -105,6 +105,19 @@ export function EventRegistrationModal({ isOpen, onClose, eventTitle }: EventReg
                             value={form.message}
                             onChange={(e) => setForm({ ...form, message: e.target.value })}
                         />
+
+                        <div className="flex items-start space-x-2 pt-2">
+                            <input
+                                type="checkbox"
+                                id="consent-event"
+                                required
+                                className="mt-1 h-4 w-4 shrink-0 rounded-sm border-primary text-primary focus:ring-primary"
+                            />
+                            <label htmlFor="consent-event" className="text-xs text-muted-foreground leading-tight cursor-pointer">
+                                Я даю согласие на <a href="/data-consent" target="_blank" className="text-primary hover:underline">обработку персональных данных</a>
+                            </label>
+                        </div>
+
                         <Button
                             type="submit"
                             disabled={isSubmitting}

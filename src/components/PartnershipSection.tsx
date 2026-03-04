@@ -113,6 +113,19 @@ const PartnershipSection = () => {
                 />
                 <Input placeholder="Email *" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
                 <Textarea placeholder="Сообщение" rows={3} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+
+                <div className="flex items-start space-x-2 py-1">
+                  <input
+                    type="checkbox"
+                    id="consent-partnership"
+                    required
+                    className="mt-1 h-4 w-4 shrink-0 rounded-sm border-primary text-primary focus:ring-primary"
+                  />
+                  <label htmlFor="consent-partnership" className="text-xs text-muted-foreground leading-tight cursor-pointer">
+                    Я даю согласие на <a href="/data-consent" target="_blank" className="text-primary hover:underline">обработку персональных данных</a>
+                  </label>
+                </div>
+
                 <Button type="submit" className="w-full bg-gradient-forest text-primary-foreground font-semibold hover:opacity-90">
                   Отправить заявку
                 </Button>

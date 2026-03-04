@@ -26,6 +26,7 @@ type FlowStep =
   | "register_phone"
   | "register_email"
   | "register_message"
+  | "register_consent"
   | "register_confirm";
 
 const FAQ_DATA: Record<string, string> = {
@@ -150,16 +151,16 @@ const ChatConsultant = () => {
       case "register_message": {
         const finalData = { ...formData, message: text };
         setFormData(finalData);
-        addBotMessage(
-          `Проверьте данные:\n📌 Имя: ${finalData.name}\n📞 Телефон: ${finalData.phone}${finalData.email ? `\n📧 Email: ${finalData.email}` : ""}${finalData.message ? `\n💬 Сообщение: ${finalData.message}` : ""}`,
-          [
-            { label: "✅ Подтвердить", value: "confirm" },
-            { label: "❌ Отменить", value: "cancel" },
-          ]
-        );
-        setFlowStep("register_confirm");
+        addBotMessage("Пожалуйста, подтвердите согласие на обработку персональных данных:", [
+          { label: "✅ Согласен", value: "consent_yes" },
+          { label: "❌ Отказаться", value: "consent_no" },
+        ]);
+        setFlowStep("register_consent");
         break;
       }
+      case "register_consent":
+        // handled by option click
+        break;
       case "register_confirm":
         // handled by option click below
         break;
@@ -174,43 +175,60 @@ const ChatConsultant = () => {
     const lastMsg = messages[messages.length - 1];
     if (!lastMsg || lastMsg.sender !== "user") return;
 
-    if (flowStep === "register_confirm") {
-      // This is handled via option clicks, not text input
-    }
+    // Both register_consent and register_confirm are handled via option clicks
   }, [messages, flowStep]);
 
   const handleConfirmOption = async (value: string) => {
-    if (value === "confirm") {
-      addUserMessage("Подтвердить");
-      try {
-        await submitForm({
-          name: formData.name,
-          phone: formData.phone,
-          email: formData.email || undefined,
-          message: formData.message || undefined,
-          form_type: "ai_consultant",
-        });
-        addBotMessage("✅ Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.");
-        toast({ title: "Заявка отправлена", description: "Мы свяжемся с вами!" });
-      } catch {
-        addBotMessage("❌ Произошла ошибка при отправке. Попробуйте позже или свяжитесь с нами по телефону.");
-        toast({ title: "Ошибка", description: "Не удалось отправить заявку", variant: "destructive" });
-      }
-      setFormData({ name: "", phone: "", email: "", message: "" });
-      setTimeout(() => {
-        addBotMessage("Чем ещё могу помочь?", MAIN_OPTIONS);
+    if (flowStep === "register_consent") {
+      if (value === "consent_yes") {
+        addUserMessage("Согласен");
+        addBotMessage(
+          `Проверьте данные:\n📌 Имя: ${formData.name}\n📞 Телефон: ${formData.phone}${formData.email ? `\n📧 Email: ${formData.email}` : ""}${formData.message ? `\n💬 Сообщение: ${formData.message}` : ""}`,
+          [
+            { label: "✅ Подтвердить", value: "confirm" },
+            { label: "❌ Отменить", value: "cancel" },
+          ]
+        );
+        setFlowStep("register_confirm");
+      } else {
+        addUserMessage("Отказаться");
+        setFormData({ name: "", phone: "", email: "", message: "" });
+        addBotMessage("Запись отменена (требуется согласие). Чем ещё могу помочь?", MAIN_OPTIONS);
         setFlowStep("main_menu");
-      }, 500);
-    } else if (value === "cancel") {
-      addUserMessage("Отменить");
-      setFormData({ name: "", phone: "", email: "", message: "" });
-      addBotMessage("Запись отменена. Чем ещё могу помочь?", MAIN_OPTIONS);
-      setFlowStep("main_menu");
+      }
+    } else if (flowStep === "register_confirm") {
+      if (value === "confirm") {
+        addUserMessage("Подтвердить");
+        try {
+          await submitForm({
+            name: formData.name,
+            phone: formData.phone,
+            email: formData.email || undefined,
+            message: formData.message || undefined,
+            form_type: "ai_consultant",
+          });
+          addBotMessage("✅ Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.");
+          toast({ title: "Заявка отправлена", description: "Мы свяжемся с вами!" });
+        } catch {
+          addBotMessage("❌ Произошла ошибка при отправке. Попробуйте позже или свяжитесь с нами по телефону.");
+          toast({ title: "Ошибка", description: "Не удалось отправить заявку", variant: "destructive" });
+        }
+        setFormData({ name: "", phone: "", email: "", message: "" });
+        setTimeout(() => {
+          addBotMessage("Чем ещё могу помочь?", MAIN_OPTIONS);
+          setFlowStep("main_menu");
+        }, 500);
+      } else if (value === "cancel") {
+        addUserMessage("Отменить");
+        setFormData({ name: "", phone: "", email: "", message: "" });
+        addBotMessage("Запись отменена. Чем ещё могу помочь?", MAIN_OPTIONS);
+        setFlowStep("main_menu");
+      }
     }
   };
 
   const onOptionClick = (value: string) => {
-    if (flowStep === "register_confirm") {
+    if (flowStep === "register_confirm" || flowStep === "register_consent") {
       handleConfirmOption(value);
     } else {
       handleOptionClick(value);
@@ -249,14 +267,11 @@ const ChatConsultant = () => {
       const finalData = { ...formData, message: "" };
       setFormData(finalData);
       addUserMessage("Пропущено");
-      addBotMessage(
-        `Проверьте данные:\n📌 Имя: ${finalData.name}\n📞 Телефон: ${finalData.phone}${finalData.email ? `\n📧 Email: ${finalData.email}` : ""}`,
-        [
-          { label: "✅ Подтвердить", value: "confirm" },
-          { label: "❌ Отменить", value: "cancel" },
-        ]
-      );
-      setFlowStep("register_confirm");
+      addBotMessage("Пожалуйста, подтвердите согласие на обработку персональных данных:", [
+        { label: "✅ Согласен", value: "consent_yes" },
+        { label: "❌ Отказаться", value: "consent_no" },
+      ]);
+      setFlowStep("register_consent");
     }
   };
 
@@ -321,11 +336,10 @@ const ChatConsultant = () => {
                       </div>
                     )}
                     <div
-                      className={`max-w-[75%] px-3 py-2 rounded-xl text-sm whitespace-pre-line ${
-                        msg.sender === "user"
+                      className={`max-w-[75%] px-3 py-2 rounded-xl text-sm whitespace-pre-line ${msg.sender === "user"
                           ? "bg-primary text-primary-foreground rounded-br-sm"
                           : "bg-muted text-foreground rounded-bl-sm"
-                      }`}
+                        }`}
                     >
                       {msg.text}
                     </div>

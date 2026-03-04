@@ -15,6 +15,10 @@ import SettingsEditor from "./pages/SettingsEditor";
 import MediaGallery from "./pages/MediaGallery";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import AdminLayout from "./components/admin/AdminLayout";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import DataConsent from "./pages/DataConsent";
+import CookieBanner from "./components/CookieBanner";
+import { Analytics } from "./components/Analytics";
 
 const queryClient = new QueryClient();
 
@@ -24,8 +28,12 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <CookieBanner />
+        <Analytics />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/data-consent" element={<DataConsent />} />
 
           {/* Admin routes */}
           <Route path="/admin" element={<AdminLogin />} />
@@ -53,3 +61,4 @@ const App = () => (
 );
 
 export default App;
+
