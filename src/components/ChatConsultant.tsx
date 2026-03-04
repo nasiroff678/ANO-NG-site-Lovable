@@ -131,18 +131,24 @@ const ChatConsultant = () => {
         addBotMessage("Укажите ваш номер телефона:");
         setFlowStep("register_phone");
         break;
-      case "register_phone":
-        setFormData((d) => ({ ...d, phone: text }));
-        addBotMessage("Укажите email (или напишите «пропустить»):");
+      case "register_phone": {
+        const digits = text.replace(/\D/g, "");
+        if (digits.length !== 11 || !digits.startsWith("7")) {
+          addBotMessage("❌ Неверный формат. Введите номер в формате +7 (XXX) XXX-XX-XX");
+          return;
+        }
+        setFormData((d) => ({ ...d, phone: "+" + digits }));
+        addBotMessage("Укажите email:");
         setFlowStep("register_email");
         break;
+      }
       case "register_email":
-        setFormData((d) => ({ ...d, email: text.toLowerCase() === "пропустить" ? "" : text }));
-        addBotMessage("Опишите, на что хотите записаться или ваш вопрос (или «пропустить»):");
+        setFormData((d) => ({ ...d, email: text }));
+        addBotMessage("Опишите, на что хотите записаться или ваш вопрос:");
         setFlowStep("register_message");
         break;
       case "register_message": {
-        const finalData = { ...formData, message: text.toLowerCase() === "пропустить" ? "" : text };
+        const finalData = { ...formData, message: text };
         setFormData(finalData);
         addBotMessage(
           `Проверьте данные:\n📌 Имя: ${finalData.name}\n📞 Телефон: ${finalData.phone}${finalData.email ? `\n📧 Email: ${finalData.email}` : ""}${finalData.message ? `\n💬 Сообщение: ${finalData.message}` : ""}`,
@@ -212,12 +218,46 @@ const ChatConsultant = () => {
   };
 
   const isInputStep = ["register_name", "register_phone", "register_email", "register_message"].includes(flowStep);
+  const isSkippable = ["register_email", "register_message"].includes(flowStep);
 
   const placeholders: Record<string, string> = {
     register_name: "Введите ваше имя...",
     register_phone: "+7 (___) ___-__-__",
-    register_email: "email@example.com или «пропустить»",
-    register_message: "Опишите запрос или «пропустить»",
+    register_email: "email@example.com",
+    register_message: "Опишите запрос...",
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, "");
+    if (!val.startsWith("7")) val = "7" + val;
+    val = val.slice(0, 11);
+    let formatted = "+7";
+    if (val.length > 1) formatted += " (" + val.slice(1, 4);
+    if (val.length > 4) formatted += ") " + val.slice(4, 7);
+    if (val.length > 7) formatted += "-" + val.slice(7, 9);
+    if (val.length > 9) formatted += "-" + val.slice(9, 11);
+    setInput(formatted);
+  };
+
+  const handleSkip = () => {
+    if (flowStep === "register_email") {
+      addUserMessage("Пропущено");
+      setFormData((d) => ({ ...d, email: "" }));
+      addBotMessage("Опишите, на что хотите записаться или ваш вопрос:");
+      setFlowStep("register_message");
+    } else if (flowStep === "register_message") {
+      const finalData = { ...formData, message: "" };
+      setFormData(finalData);
+      addUserMessage("Пропущено");
+      addBotMessage(
+        `Проверьте данные:\n📌 Имя: ${finalData.name}\n📞 Телефон: ${finalData.phone}${finalData.email ? `\n📧 Email: ${finalData.email}` : ""}`,
+        [
+          { label: "✅ Подтвердить", value: "confirm" },
+          { label: "❌ Отменить", value: "cancel" },
+        ]
+      );
+      setFlowStep("register_confirm");
+    }
   };
 
   return (
@@ -316,24 +356,37 @@ const ChatConsultant = () => {
 
             {/* Input */}
             {isInputStep && (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmitInput();
-                }}
-                className="flex items-center gap-2 px-4 py-3 border-t border-border"
-              >
-                <Input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={placeholders[flowStep] || "Введите сообщение..."}
-                  className="flex-1 text-sm"
-                  autoFocus
-                />
-                <Button type="submit" size="icon" className="h-9 w-9 flex-shrink-0">
-                  <Send className="h-4 w-4" />
-                </Button>
-              </form>
+              <>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmitInput();
+                  }}
+                  className="flex items-center gap-2 px-4 py-3 border-t border-border"
+                >
+                  <Input
+                    value={input}
+                    onChange={flowStep === "register_phone" ? handlePhoneChange : (e) => setInput(e.target.value)}
+                    placeholder={placeholders[flowStep] || "Введите сообщение..."}
+                    className="flex-1 text-sm"
+                    autoFocus
+                    maxLength={flowStep === "register_phone" ? 18 : undefined}
+                  />
+                  <Button type="submit" size="icon" className="h-9 w-9 flex-shrink-0">
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </form>
+                {isSkippable && (
+                  <div className="px-4 pb-3">
+                    <button
+                      onClick={handleSkip}
+                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      Пропустить →
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </motion.div>
         )}
