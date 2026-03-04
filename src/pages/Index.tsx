@@ -12,6 +12,7 @@ import ParticipateSection from "@/components/ParticipateSection";
 import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
 import ScrollToTop from "@/components/ScrollToTop";
+import ChatConsultant from "@/components/ChatConsultant";
 
 const Index = () => {
   return (
@@ -30,6 +31,7 @@ const Index = () => {
       <ContactSection />
       <FooterSection />
       <ScrollToTop />
+      <ChatConsultant />
     </div>
   );
 };
