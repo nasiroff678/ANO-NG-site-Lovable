@@ -19,6 +19,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import DataConsent from "./pages/DataConsent";
 import CookieBanner from "./components/CookieBanner";
 import { Analytics } from "./components/Analytics";
+import { ChatWidget } from "./components/chat/ChatWidget";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
       <BrowserRouter>
         <CookieBanner />
         <Analytics />
+        {/* <ChatWidget /> */}
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

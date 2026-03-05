@@ -59,7 +59,7 @@ const ResultsSection = () => {
           })}
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-8 px-2 sm:px-0">
           {testimonials.map((t: any, i: number) => (
             <motion.div
               key={i}
@@ -67,10 +67,22 @@ const ResultsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15 }}
-              className="bg-primary-foreground/10 backdrop-blur rounded-xl p-6 border border-primary-foreground/20"
+              className="relative bg-white text-gray-800 rounded-2xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/20 flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
             >
-              <p className="text-sm leading-relaxed mb-4 italic opacity-90">«{t.text}»</p>
-              <p className="text-xs font-semibold opacity-70">— {t.author}</p>
+              <div className="absolute -top-6 left-4 text-7xl text-primary/10 font-serif leading-none select-none">
+                "
+              </div>
+              <p className="text-base sm:text-[15px] leading-relaxed mb-8 italic relative z-10 font-medium text-gray-700">«{t.text}»</p>
+              <div className="flex items-center gap-4 mt-auto relative z-10">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden border-2 border-primary/20">
+                  {t.image ? (
+                    <img src={t.image} alt={t.author} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="font-bold text-primary">{t.author.charAt(0)}</span>
+                  )}
+                </div>
+                <p className="text-sm font-bold text-gray-900">{t.author}</p>
+              </div>
             </motion.div>
           ))}
         </div>

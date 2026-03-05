@@ -48,8 +48,8 @@ const AdminSections = () => {
                         <div className="flex items-center gap-4">
                             <div
                                 className={`w-10 h-10 rounded-lg flex items-center justify-center ${section.is_visible
-                                        ? 'bg-green-50 text-green-600'
-                                        : 'bg-gray-100 text-gray-400'
+                                    ? 'bg-green-50 text-green-600'
+                                    : 'bg-gray-100 text-gray-400'
                                     }`}
                             >
                                 {section.is_visible ? (
@@ -59,7 +59,9 @@ const AdminSections = () => {
                                 )}
                             </div>
                             <div>
-                                <h3 className="font-semibold text-gray-900">{section.section_name}</h3>
+                                <h3 className="font-semibold text-gray-900">
+                                    {section.id === 'results' ? 'Результаты и отзывы' : section.section_name}
+                                </h3>
                                 <p className="text-xs text-gray-400">ID: {section.id}</p>
                             </div>
                         </div>

@@ -131,6 +131,7 @@ const sectionFields: Record<string, { fields: FieldDef[]; arrays: ArrayDef[] }> 
                 fields: [
                     { key: 'text', label: 'Текст отзыва', type: 'textarea' as const },
                     { key: 'author', label: 'Автор', type: 'text' as const },
+                    { key: 'image', label: 'Фото автора', type: 'image' as const },
                 ],
             },
         ],
@@ -138,15 +139,22 @@ const sectionFields: Record<string, { fields: FieldDef[]; arrays: ArrayDef[] }> 
     team: {
         fields: [
             { key: 'heading', label: 'Заголовок', type: 'text' },
-            { key: 'director_name', label: 'Имя директора', type: 'text' },
-            { key: 'director_title', label: 'Должность', type: 'text' },
-            { key: 'director_bio', label: 'Биография', type: 'textarea' },
-            { key: 'director_photo', label: 'Фото директора', type: 'image' },
             { key: 'volunteer_title', label: 'Заголовок волонтёрства', type: 'text' },
             { key: 'volunteer_text', label: 'Текст волонтёрства', type: 'textarea' },
             { key: 'volunteer_cta', label: 'Кнопка волонтёрства', type: 'text' },
         ],
-        arrays: [],
+        arrays: [
+            {
+                key: 'members',
+                label: 'Команда',
+                fields: [
+                    { key: 'name', label: 'Имя', type: 'text' as const },
+                    { key: 'title', label: 'Должность', type: 'text' as const },
+                    { key: 'bio', label: 'Биография', type: 'textarea' as const },
+                    { key: 'photo', label: 'Фото', type: 'image' as const },
+                ],
+            },
+        ],
     },
     documents: {
         fields: [
@@ -309,7 +317,9 @@ const SectionEditor = () => {
                     <ArrowLeft className="w-4 h-4 mr-1" /> Назад
                 </Button>
                 <div className="flex-1">
-                    <h1 className="text-2xl font-bold text-gray-900">{raw?.section_name}</h1>
+                    <h1 className="text-2xl font-bold text-gray-900">
+                        {id === 'results' ? 'Результаты и отзывы' : raw?.section_name}
+                    </h1>
                     <p className="text-sm text-gray-400">ID: {id}</p>
                 </div>
                 <Button onClick={handleSave} disabled={saving} className="bg-emerald-600 hover:bg-emerald-700">
