@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main # Настройте ветку, если ваша основная ветка называется master
+  workflow_dispatch: # Позволяет запускать вручную по кнопке
 
 jobs:
   web-deploy:
