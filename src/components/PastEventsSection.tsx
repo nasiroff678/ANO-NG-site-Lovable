@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { Calendar, MapPin, Users, Camera } from "lucide-react";
+import { useState } from "react";
 import activityHiking from "@/assets/activity-hiking.jpg";
 import activityCamping from "@/assets/activity-camping.jpg";
 import natureRiver from "@/assets/nature-river.jpg";
 import activitySports from "@/assets/activity-sports.jpg";
 import { useContent } from "@/hooks/useContent";
+import ImageGalleryModal from "./ImageGalleryModal";
 
 const defaultImages = [activityHiking, activitySports, natureRiver, activityCamping];
 
@@ -17,12 +19,57 @@ const defaultPastEvents = [
 
 const PastEventsSection = () => {
   const { content, isVisible } = useContent('past_events');
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [galleryTitle, setGalleryTitle] = useState("");
 
   if (isVisible === false) return null;
 
   const heading = content?.heading || "Прошедшие мероприятия";
   const subtitle = content?.subtitle || "Каждое мероприятие — это новый опыт, знакомства и яркие эмоции для наших участников";
-  const events = content?.events || defaultPastEvents;
+  
+  const openGallery = (images: string[], title: string) => {
+    setGalleryImages(images);
+    setGalleryTitle(title);
+    setIsGalleryOpen(true);
+  };
+  
+  // Helper to parse dates like "15 марта 2025" or "15.03.2025" for sorting
+  const parseDate = (dateStr: string) => {
+    if (!dateStr) return 0;
+    
+    // Try DD.MM.YYYY format
+    if (dateStr.includes('.')) {
+      const parts = dateStr.split('.');
+      if (parts.length >= 3) {
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        const year = parseInt(parts[2], 10);
+        if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+          return new Date(year, month, day).getTime();
+        }
+      }
+    }
+
+    // Try Russian text format
+    const months: Record<string, number> = {
+      'января': 0, 'февраля': 1, 'марта': 2, 'апреля': 3, 'мая': 4, 'июня': 5,
+      'июля': 6, 'августа': 7, 'сентября': 8, 'октября': 9, 'ноября': 10, 'декабря': 11
+    };
+    const parts = dateStr.split(' ');
+    if (parts.length >= 3) {
+      const day = parseInt(parts[0], 10);
+      const month = months[parts[1].toLowerCase()];
+      const year = parseInt(parts[2], 10);
+      if (!isNaN(day) && month !== undefined && !isNaN(year)) {
+        return new Date(year, month, day).getTime();
+      }
+    }
+    return 0; // Fallback
+  };
+
+  const rawEvents = content?.events || defaultPastEvents;
+  const events = [...rawEvents].sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
   return (
     <section id="past-events" className="py-20 md:py-28 bg-muted/50">
@@ -77,16 +124,38 @@ const PastEventsSection = () => {
                     <Users className="w-4 h-4" />
                     {event.participants} участников
                   </span>
-                  <span className="inline-flex items-center gap-1.5 text-sm text-primary cursor-pointer hover:underline">
-                    <Camera className="w-4 h-4" />
-                    Фотоотчёт
-                  </span>
+                  {event.photos && event.photos.length > 0 ? (
+                    <button 
+                      onClick={() => openGallery(event.photos, event.title)}
+                      className="inline-flex items-center gap-1.5 text-sm text-primary cursor-pointer hover:underline"
+                    >
+                      <Camera className="w-4 h-4" />
+                      Фотоотчёт ({event.photos.length})
+                    </button>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <Camera className="w-4 h-4" />
+                      Фотоотчёт
+                    </span>
+                  )}
+                  {event.web_link_url && (
+                    <a href={event.web_link_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-primary cursor-pointer hover:underline ml-2">
+                       Подробнее
+                    </a>
+                  )}
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
+      
+      <ImageGalleryModal 
+        images={galleryImages}
+        isOpen={isGalleryOpen}
+        onClose={() => setIsGalleryOpen(false)}
+        title={galleryTitle}
+      />
     </section>
   );
 };

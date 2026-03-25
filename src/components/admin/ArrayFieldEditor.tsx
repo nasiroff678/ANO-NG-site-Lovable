@@ -3,11 +3,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Plus, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
 import ImageUploader from './ImageUploader';
+import MultiImageUploader from './MultiImageUploader';
 
 interface FieldConfig {
     key: string;
     label: string;
-    type: 'text' | 'textarea' | 'number' | 'image';
+    type: 'text' | 'textarea' | 'number' | 'image' | 'image_array';
 }
 
 interface ArrayFieldEditorProps {
@@ -102,6 +103,12 @@ const ArrayFieldEditor = ({ label, items, fields, onChange, maxItems }: ArrayFie
                                             label={field.label}
                                             value={item[field.key] || ''}
                                             onChange={(url) => updateItem(i, field.key, url)}
+                                        />
+                                    ) : field.type === 'image_array' ? (
+                                        <MultiImageUploader
+                                            label={field.label}
+                                            value={item[field.key] || []}
+                                            onChange={(urls) => updateItem(i, field.key, urls)}
                                         />
                                     ) : field.type === 'textarea' ? (
                                         <div>

@@ -109,6 +109,8 @@ const sectionFields: Record<string, { fields: FieldDef[]; arrays: ArrayDef[] }> 
                     { key: 'participants', label: 'Участников', type: 'number' as const },
                     { key: 'description', label: 'Описание', type: 'textarea' as const },
                     { key: 'image', label: 'Изображение', type: 'image' as const },
+                    { key: 'photos', label: 'Фотоотчёт', type: 'image_array' as const },
+                    { key: 'web_link_url', label: 'Веб-ссылка (Подробнее)', type: 'text' as const },
                 ],
             },
         ],
@@ -250,13 +252,13 @@ const sectionFields: Record<string, { fields: FieldDef[]; arrays: ArrayDef[] }> 
 interface FieldDef {
     key: string;
     label: string;
-    type: 'text' | 'textarea' | 'image';
+    type: 'text' | 'textarea' | 'image' | 'image_array';
 }
 
 interface ArrayDef {
     key: string;
     label: string;
-    fields: { key: string; label: string; type: 'text' | 'textarea' | 'number' | 'image' }[];
+    fields: { key: string; label: string; type: 'text' | 'textarea' | 'number' | 'image' | 'image_array' }[];
 }
 
 const SectionEditor = () => {
