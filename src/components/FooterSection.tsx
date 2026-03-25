@@ -33,7 +33,7 @@ const FooterSection = () => {
               <p>ИНН: 0260996986</p>
               <p>КПП: 026001001</p>
               <p className="pt-2"><strong>Адрес:</strong> 452320, Республика Башкортостан, г. Дюртюли, ул. Ленина, д. 8, оф. 202</p>
-              <p className="pt-2"><strong>Телефон:</strong> <a href="tel:+79998887766" className="hover:text-primary transition-colors">+7 (999) 888-77-66</a></p>
+              <p className="pt-2"><strong>Телефон:</strong> <a href="tel:+79270809567" className="hover:text-primary transition-colors">+7 (927)-080-9567</a></p>
               <p><strong>Email:</strong> <a href="mailto:info@novye-gorizonty.ru" className="hover:text-primary transition-colors">info@novye-gorizonty.ru</a></p>
             </div>
           </div>
