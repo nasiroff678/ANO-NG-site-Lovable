@@ -43,19 +43,19 @@ const App = () => (
           <Route
             element={
               <ProtectedRoute>
-                <AdminLayout />
+                <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" /></div>}>
+                  <AdminLayout />
+                </Suspense>
               </ProtectedRoute>
             }
           >
-            <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" /></div>}>
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/submissions" element={<AdminSubmissions />} />
-              <Route path="/admin/sections" element={<AdminSections />} />
-              <Route path="/admin/sections/:id" element={<SectionEditor />} />
-              <Route path="/admin/navigation" element={<NavigationEditor />} />
-              <Route path="/admin/settings" element={<SettingsEditor />} />
-              <Route path="/admin/media" element={<MediaGallery />} />
-            </Suspense>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/submissions" element={<AdminSubmissions />} />
+            <Route path="/admin/sections" element={<AdminSections />} />
+            <Route path="/admin/sections/:id" element={<SectionEditor />} />
+            <Route path="/admin/navigation" element={<NavigationEditor />} />
+            <Route path="/admin/settings" element={<SettingsEditor />} />
+            <Route path="/admin/media" element={<MediaGallery />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
