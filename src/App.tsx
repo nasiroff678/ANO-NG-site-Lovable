@@ -47,23 +47,30 @@ const App = () => (
           <Route path="/data-consent" element={<DataConsent />} />
 
           {/* Admin routes */}
-          <Route path="/admin" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <AdminLogin />
+              </Suspense>
+            }
+          />
           <Route
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" /></div>}>
+                <Suspense fallback={<AdminLoader />}>
                   <AdminLayout />
                 </Suspense>
               </ProtectedRoute>
             }
           >
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/submissions" element={<AdminSubmissions />} />
-            <Route path="/admin/sections" element={<AdminSections />} />
-            <Route path="/admin/sections/:id" element={<SectionEditor />} />
-            <Route path="/admin/navigation" element={<NavigationEditor />} />
-            <Route path="/admin/settings" element={<SettingsEditor />} />
-            <Route path="/admin/media" element={<MediaGallery />} />
+            <Route path="/admin/dashboard" element={<Suspense fallback={<AdminLoader />}><AdminDashboard /></Suspense>} />
+            <Route path="/admin/submissions" element={<Suspense fallback={<AdminLoader />}><AdminSubmissions /></Suspense>} />
+            <Route path="/admin/sections" element={<Suspense fallback={<AdminLoader />}><AdminSections /></Suspense>} />
+            <Route path="/admin/sections/:id" element={<Suspense fallback={<AdminLoader />}><SectionEditor /></Suspense>} />
+            <Route path="/admin/navigation" element={<Suspense fallback={<AdminLoader />}><NavigationEditor /></Suspense>} />
+            <Route path="/admin/settings" element={<Suspense fallback={<AdminLoader />}><SettingsEditor /></Suspense>} />
+            <Route path="/admin/media" element={<Suspense fallback={<AdminLoader />}><MediaGallery /></Suspense>} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
