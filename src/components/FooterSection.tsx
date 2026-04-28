@@ -34,7 +34,7 @@ const FooterSection = () => {
               <p>КПП: 026001001</p>
               <p className="pt-2"><strong>Адрес:</strong> 452320, Республика Башкортостан, г. Дюртюли, ул. Ленина, д. 8, оф. 202</p>
               <p className="pt-2"><strong>Телефон:</strong> <a href="tel:+79270809567" className="hover:text-primary transition-colors">+7 (927)-080-9567</a></p>
-              <p><strong>Email:</strong> <a href="mailto:info@дюртюли-ано.рф" className="hover:text-primary transition-colors">info@дюртюли-ано.рф</a></p>
+              <p><strong>Email:</strong> <a href={`mailto:info@${encodeURIComponent('дюртюли-ано.рф')}`} className="hover:text-primary transition-colors">info@дюртюли-ано.рф</a></p>
             </div>
           </div>
 
