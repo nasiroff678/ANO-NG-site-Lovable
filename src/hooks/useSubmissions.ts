@@ -12,20 +12,22 @@ export interface Submission {
     created_at: string;
 }
 
-export const useSubmissions = () => {
-    const { data, isLoading, error } = useQuery({
-        queryKey: ['submissions'],
-        queryFn: async () => {
-            const { data, error } = await supabase
-                .from('form_submissions')
-                .select('*')
-                .order('created_at', { ascending: false });
-            if (error) throw error;
-            return (data || []) as Submission[];
-        },
-    });
+export const useSubmissions = (page = 1, pageSize = 20) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['submissions', page, pageSize],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('form_submissions')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .range((page - 1) * pageSize, page * pageSize - 1);
+      if (error) throw error;
+      return (data || []) as Submission[];
+    },
+    staleTime: 1000 * 60 * 5,
+  });
 
-    return { submissions: data || [], isLoading, error };
+  return { submissions: data ?? [], isLoading, error };
 };
 
 export const useUpdateSubmissionStatus = () => {
