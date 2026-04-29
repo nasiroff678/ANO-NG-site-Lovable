@@ -3,34 +3,34 @@ name: Deploy to Beget
 on:
   push:
     branches:
-      - main # Настройте ветку, если ваша основная ветка называется master
-  workflow_dispatch: # Позволяет запускать вручную по кнопке
+      - main # Настройка ветки, при пуше в которую будет запускаться деплой
+  workflow_dispatch: # Позволяет запускать деплой вручную из GitHub
 
 jobs:
   web-deploy:
-    name: 🎉 Deploy
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Get latest code
+      - name: Get latest code
         uses: actions/checkout@v4
-      
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22' # Обновлено с 20 до 22
           cache: 'npm'
 
-      - name: 🔨 Install Dependencies
+      - name: Install dependencies
         run: npm ci
 
-      - name: 🏗️ Build Project
+      - name: Build Project
         run: npm run build
 
-      - name: 📂 Sync files (Deploy)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Sync files (Deploy)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5 # Добавлен префикс v
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist/ # Папка, которая генерируется после сборки
-          server-dir: ./durtuliano/public_html/ # Папка на сервере Beget, куда копируются файлы. Оставьте так.
+          local-dir: ./dist/ # Папка, которую генерирует ваша сборка
+          server-dir: /dyurtuli-ano/public_html/ # Папка на сервере Beget
