@@ -22,7 +22,7 @@ export function useContent(sectionId: string) {
             if (error) throw error;
             return data as SiteContent;
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 1000 * 30, refetchOnWindowFocus: true, refetchOnMount: true,
     });
 
     return {
@@ -45,7 +45,7 @@ export function useAllContent() {
             if (error) throw error;
             return data as SiteContent[];
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 1000 * 30, refetchOnWindowFocus: true, refetchOnMount: true,
     });
 
     return { sections: data ?? [], isLoading, error };

@@ -19,7 +19,7 @@ export function useSettings(category?: string) {
             if (error) throw error;
             return data as SiteSetting[];
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 1000 * 30, refetchOnWindowFocus: true, refetchOnMount: true,
     });
 
     const settingsMap = (data ?? []).reduce(
@@ -42,7 +42,7 @@ export function useSetting(key: string) {
             if (error) throw error;
             return data.value as string;
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 1000 * 30, refetchOnWindowFocus: true, refetchOnMount: true,
     });
 
     return { value: data ?? '', isLoading };
