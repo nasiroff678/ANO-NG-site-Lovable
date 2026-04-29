@@ -54,11 +54,15 @@ export function useUpdateSettings() {
     return useMutation({
         mutationFn: async (updates: { key: string; value: string }[]) => {
             for (const { key, value } of updates) {
-                const { error } = await supabase
+                const { data, error } = await supabase
                     .from('site_settings')
                     .update({ value, updated_at: new Date().toISOString() })
-                    .eq('key', key);
+                    .eq('key', key)
+                    .select();
                 if (error) throw error;
+                if (!data || data.length === 0) {
+                    throw new Error(`Настройка "${key}" не сохранена: нет прав на запись (RLS). Проверьте политики таблицы site_settings в Supabase.`);
+                }
             }
         },
         onSuccess: () => {
