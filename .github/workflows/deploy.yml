@@ -35,4 +35,4 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/ # Папка, которую генерирует ваша сборка
-          server-dir: /dyurtuliano/public_html/ # Папка на сервере Beget
+          server-dir: /durtuliano/public_html/ # Папка на сервере Beget
