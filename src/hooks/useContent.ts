@@ -80,8 +80,15 @@ export function useUpdateContent() {
             return data[0];
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['site_content', data.id] });
-            queryClient.invalidateQueries({ queryKey: ['site_content', 'all'] });
+            // Immediately invalidate cache to ensure latest data is fetched
+            queryClient.invalidateQueries({ 
+                queryKey: ['site_content', data.id],
+                refetchType: 'active'
+            });
+            queryClient.invalidateQueries({ 
+                queryKey: ['site_content', 'all'],
+                refetchType: 'active'
+            });
         },
     });
 }
