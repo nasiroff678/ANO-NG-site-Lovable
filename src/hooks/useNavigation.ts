@@ -37,11 +37,15 @@ export function useUpdateNavigation() {
 
     return useMutation({
         mutationFn: async (items: Partial<NavigationItem> & { id: string }) => {
-            const { error } = await supabase
+            const { data, error } = await supabase
                 .from('navigation_items')
                 .update({ ...items, updated_at: new Date().toISOString() })
-                .eq('id', items.id);
+                .eq('id', items.id)
+                .select();
             if (error) throw error;
+            if (!data || data.length === 0) {
+                throw new Error('Пункт меню не сохранён: нет прав на запись (RLS). Проверьте политики таблицы navigation_items в Supabase.');
+            }
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['navigation_items'] });

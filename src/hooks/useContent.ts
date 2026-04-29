@@ -72,10 +72,12 @@ export function useUpdateContent() {
                 .from('site_content')
                 .update(updates)
                 .eq('id', id)
-                .select()
-                .single();
+                .select();
             if (error) throw error;
-            return data;
+            if (!data || data.length === 0) {
+                throw new Error('Изменения не сохранены: нет прав на запись (RLS). Проверьте политики таблицы site_content в Supabase.');
+            }
+            return data[0];
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['site_content', data.id] });
