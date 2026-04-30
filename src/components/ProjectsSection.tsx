@@ -25,6 +25,10 @@ const defaultEvents = [
   { date: "12 июля 2026", endDate: "2026-07-12", title: "Водный поход по реке Белой", location: "р. Белая, Мелеузовский район" },
 ];
 
+const getSafeArray = <T,>(value: T[] | undefined | null, fallback: T[]) => {
+  return Array.isArray(value) && value.length > 0 ? value : fallback;
+};
+
 export const getRemainingInfo = (endDateString?: string) => {
   if (!endDateString) return null;
   const end = new Date(endDateString);
@@ -58,8 +62,8 @@ const ProjectsSection = () => {
   if (isVisible === false) return null;
 
   const heading = content?.heading || "Проекты и мероприятия";
-  const projects = content?.projects || defaultProjects;
-  const upcomingEvents = content?.upcoming_events || defaultEvents;
+  const projects = getSafeArray(content?.projects, defaultProjects);
+  const upcomingEvents = getSafeArray(content?.upcoming_events, defaultEvents);
 
   const handleOpenModal = (title: string) => {
     setSelectedEventTitle(title);
