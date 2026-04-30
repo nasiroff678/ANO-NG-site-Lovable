@@ -90,8 +90,9 @@ const ProjectsSection = () => {
 
         <div className="grid sm:grid-cols-2 gap-6 mb-16">
           {projects.map((p: any, i: number) => {
-            const startDate = p.startDate || defaultProjects[i % defaultProjects.length]?.startDate;
-            const endDate = p.endDate || defaultProjects[i % defaultProjects.length]?.endDate;
+            const startDate = p.startDate || "";
+            const endDate = p.endDate || "";
+            const remaining = endDate ? getRemainingInfo(endDate) : null;
             return (
               <motion.div
                 key={p.title}
@@ -107,14 +108,14 @@ const ProjectsSection = () => {
                 <div className="p-6 flex flex-col flex-1">
                   <div className="flex justify-between items-start gap-4 mb-2">
                     <h3 className="font-heading font-semibold text-lg text-foreground leading-tight">{p.title}</h3>
-                    {endDate && (
+                    {remaining && (
                       <div className={cn(
                         "flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-md whitespace-nowrap border shrink-0",
-                        getRemainingInfo(endDate)?.isEnded ? "bg-muted text-muted-foreground border-border" :
-                          (getRemainingInfo(endDate)?.days || 0) <= 7 ? "bg-red-50 text-red-600 border-red-200" : "bg-emerald-50 text-emerald-600 border-emerald-200"
+                        remaining.isEnded ? "bg-muted text-muted-foreground border-border" :
+                          remaining.days <= 7 ? "bg-red-50 text-red-600 border-red-200" : "bg-emerald-50 text-emerald-600 border-emerald-200"
                       )}>
-                        {getRemainingInfo(endDate)?.isEnded ? null : <Timer className="w-3 h-3" />}
-                        {getRemainingInfo(endDate)?.text}
+                        {remaining.isEnded ? null : <Timer className="w-3 h-3" />}
+                        {remaining.text}
                       </div>
                     )}
                   </div>
@@ -124,9 +125,11 @@ const ProjectsSection = () => {
                         <Calendar className="w-3.5 h-3.5 text-primary" /> {startDate}
                       </span>
                     )}
-                    <span className="text-xs text-secondary font-medium flex items-center gap-1.5">
-                      <Users className="w-3.5 h-3.5" /> {p.audience}
-                    </span>
+                    {p.audience && (
+                      <span className="text-xs text-secondary font-medium flex items-center gap-1.5">
+                        <Users className="w-3.5 h-3.5" /> {p.audience}
+                      </span>
+                    )}
                   </div>
                   <p className="text-sm text-muted-foreground mb-4 flex-1">{p.desc}</p>
                   <div className="flex items-center justify-end">
@@ -134,9 +137,9 @@ const ProjectsSection = () => {
                       size="sm"
                       className="bg-gradient-orange text-accent-foreground font-semibold hover:opacity-90 transition-opacity"
                       onClick={() => handleOpenModal(p.title)}
-                      disabled={getRemainingInfo(endDate)?.isEnded}
+                      disabled={remaining?.isEnded}
                     >
-                      {getRemainingInfo(endDate)?.isEnded ? "Завершено" : "Участвовать"}
+                      {remaining?.isEnded ? "Завершено" : "Участвовать"}
                     </Button>
                   </div>
                 </div>
