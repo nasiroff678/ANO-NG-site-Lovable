@@ -3,6 +3,7 @@ import {
     LayoutGrid,
     FileText,
     Layers,
+    FolderOpen,
     Navigation,
     Settings,
     LogOut,
@@ -14,6 +15,7 @@ const links = [
     { to: '/admin/dashboard', icon: LayoutGrid, label: 'Обзор' },
     { to: '/admin/submissions', icon: FileText, label: 'Заявки' },
     { to: '/admin/sections', icon: Layers, label: 'Секции' },
+    { to: '/admin/collections', icon: FolderOpen, label: 'Коллекции' },
     { to: '/admin/navigation', icon: Navigation, label: 'Навигация' },
     { to: '/admin/settings', icon: Settings, label: 'Настройки' },
 ];
