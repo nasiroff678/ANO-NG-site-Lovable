@@ -7,6 +7,7 @@ import activityCamping from "@/assets/activity-camping.jpg";
 import natureRiver from "@/assets/nature-river.jpg";
 import activitySports from "@/assets/activity-sports.jpg";
 import { useContent } from "@/hooks/useContent";
+import { useContentItems } from "@/hooks/useContentItems";
 import { EventRegistrationModal } from "@/components/EventRegistrationModal";
 import { useState } from "react";
 
@@ -56,14 +57,22 @@ export const getRemainingInfo = (endDateString?: string) => {
 
 const ProjectsSection = () => {
   const { content, isVisible } = useContent('projects');
+  const { items: projectItems } = useContentItems('projects', { onlyVisible: true });
+  const { items: eventItems } = useContentItems('upcoming_events', { onlyVisible: true });
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedEventTitle, setSelectedEventTitle] = useState("");
 
   if (isVisible === false) return null;
 
   const heading = content?.heading || "Проекты и мероприятия";
-  const projects = getSafeArray(content?.projects, defaultProjects);
-  const upcomingEvents = getSafeArray(content?.upcoming_events, defaultEvents);
+
+  // Priority: 1) new content_items rows  2) legacy JSON array  3) hardcoded defaults
+  const projects = projectItems.length > 0
+    ? projectItems.map((it) => it.data)
+    : getSafeArray(content?.projects, defaultProjects);
+  const upcomingEvents = eventItems.length > 0
+    ? eventItems.map((it) => it.data)
+    : getSafeArray(content?.upcoming_events, defaultEvents);
 
   const handleOpenModal = (title: string) => {
     setSelectedEventTitle(title);
