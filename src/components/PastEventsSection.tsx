@@ -6,6 +6,7 @@ import activityCamping from "@/assets/activity-camping.jpg";
 import natureRiver from "@/assets/nature-river.jpg";
 import activitySports from "@/assets/activity-sports.jpg";
 import { useContent } from "@/hooks/useContent";
+import { useContentItems } from "@/hooks/useContentItems";
 import ImageGalleryModal from "./ImageGalleryModal";
 
 const defaultImages = [activityHiking, activitySports, natureRiver, activityCamping];
@@ -19,6 +20,7 @@ const defaultPastEvents = [
 
 const PastEventsSection = () => {
   const { content, isVisible } = useContent('past_events');
+  const { items: pastEventItems } = useContentItems('past_events', { onlyVisible: true });
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [galleryTitle, setGalleryTitle] = useState("");
@@ -68,7 +70,10 @@ const PastEventsSection = () => {
     return 0; // Fallback
   };
 
-  const rawEvents = content?.events || defaultPastEvents;
+  // Priority: 1) new content_items rows  2) legacy JSON array  3) hardcoded defaults
+  const rawEvents = pastEventItems.length > 0
+    ? pastEventItems.map((it) => it.data)
+    : (Array.isArray(content?.events) && content.events.length > 0 ? content.events : defaultPastEvents);
   const events = [...rawEvents].sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
   return (

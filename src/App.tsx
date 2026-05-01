@@ -19,6 +19,8 @@ const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const AdminSubmissions = lazy(() => import("./pages/AdminSubmissions"));
 const AdminSections = lazy(() => import("./pages/AdminSections"));
 const SectionEditor = lazy(() => import("./pages/SectionEditor"));
+const AdminCollections = lazy(() => import("./pages/AdminCollections"));
+const CollectionEditor = lazy(() => import("./pages/CollectionEditor"));
 const NavigationEditor = lazy(() => import("./pages/NavigationEditor"));
 const SettingsEditor = lazy(() => import("./pages/SettingsEditor"));
 const MediaGallery = lazy(() => import("./pages/MediaGallery"));
@@ -68,6 +70,8 @@ const App = () => (
             <Route path="/admin/submissions" element={<Suspense fallback={<AdminLoader />}><AdminSubmissions /></Suspense>} />
             <Route path="/admin/sections" element={<Suspense fallback={<AdminLoader />}><AdminSections /></Suspense>} />
             <Route path="/admin/sections/:id" element={<Suspense fallback={<AdminLoader />}><SectionEditor /></Suspense>} />
+            <Route path="/admin/collections" element={<Suspense fallback={<AdminLoader />}><AdminCollections /></Suspense>} />
+            <Route path="/admin/collections/:category" element={<Suspense fallback={<AdminLoader />}><CollectionEditor /></Suspense>} />
             <Route path="/admin/navigation" element={<Suspense fallback={<AdminLoader />}><NavigationEditor /></Suspense>} />
             <Route path="/admin/settings" element={<Suspense fallback={<AdminLoader />}><SettingsEditor /></Suspense>} />
             <Route path="/admin/media" element={<Suspense fallback={<AdminLoader />}><MediaGallery /></Suspense>} />
