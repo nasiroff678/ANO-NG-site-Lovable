@@ -16,7 +16,7 @@ type LegacyCollectionConfig = {
     arrayKey: string;
 };
 
-const KEY = (category: string) => ['content_items', category];
+const KEY = (category: string, onlyVisible?: boolean) => ['content_items', category, onlyVisible ? 'visible' : 'all'];
 const LEGACY_COLLECTIONS: Record<string, LegacyCollectionConfig> = {
     projects: { sectionId: 'projects', arrayKey: 'projects' },
     upcoming_events: { sectionId: 'projects', arrayKey: 'upcoming_events' },
@@ -104,7 +104,7 @@ async function updateLegacyItems(
 }
 
 const invalidateCategoryQueries = (qc: ReturnType<typeof useQueryClient>, category: string) => {
-    qc.invalidateQueries({ queryKey: KEY(category), refetchType: 'active' });
+    qc.invalidateQueries({ queryKey: ['content_items', category], refetchType: 'active' });
 
     const config = getLegacyConfig(category);
     if (config) {
@@ -115,7 +115,7 @@ const invalidateCategoryQueries = (qc: ReturnType<typeof useQueryClient>, catego
 
 export function useContentItems(category: string, opts?: { onlyVisible?: boolean }) {
     const { data, isLoading, error } = useQuery({
-        queryKey: KEY(category),
+        queryKey: KEY(category, opts?.onlyVisible),
         enabled: !!category,
         queryFn: async () => {
             let query = supabase
