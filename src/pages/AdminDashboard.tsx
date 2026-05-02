@@ -114,11 +114,24 @@ const AdminDashboard = () => {
                     </button>
 
                     <button
+                        onClick={() => navigate('/admin/collections')}
+                        className="flex items-center gap-4 w-full text-left hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors"
+                    >
+                        <span className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                            3
+                        </span>
+                        <div>
+                            <p className="font-medium text-gray-900">Коллекции</p>
+                            <p className="text-sm text-gray-500">Добавляйте проекты и события построчно — сразу появляются на сайте</p>
+                        </div>
+                    </button>
+
+                    <button
                         onClick={() => navigate('/admin/settings')}
                         className="flex items-center gap-4 w-full text-left hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors"
                     >
                         <span className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
-                            3
+                            4
                         </span>
                         <div>
                             <p className="font-medium text-gray-900">Настройки</p>
