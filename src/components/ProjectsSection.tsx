@@ -111,7 +111,7 @@ const ProjectsSection = () => {
                 transition={{ delay: i * 0.1 }}
                 className="bg-card rounded-xl overflow-hidden shadow-card border border-border flex flex-col"
               >
-                <div className="h-48 overflow-hidden">
+                <div className="aspect-video overflow-hidden">
                   <img src={p.image || defaultImages[i % defaultImages.length]} alt={p.title} className="w-full h-full object-cover" />
                 </div>
                 <div className="p-6 flex flex-col flex-1">

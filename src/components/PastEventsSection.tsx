@@ -100,7 +100,7 @@ const PastEventsSection = () => {
               transition={{ delay: i * 0.1 }}
               className="bg-card rounded-xl overflow-hidden shadow-card border border-border flex flex-col md:flex-row"
             >
-              <div className="md:w-80 lg:w-96 h-56 md:h-auto flex-shrink-0 overflow-hidden">
+              <div className="md:w-80 lg:w-96 aspect-video md:h-auto flex-shrink-0 overflow-hidden">
                 <img
                   src={event.image || defaultImages[i % defaultImages.length]}
                   alt={event.title}
