@@ -41,4 +41,4 @@ jobs:
           local-dir: ./dist/
           server-dir: /durtuliano/public_html/
           timeout: 60000
-          security: tls
+          security: strict
