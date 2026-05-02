@@ -29,6 +29,7 @@ export const COLLECTIONS: Record<string, CollectionConfig> = {
             { key: 'audience', label: 'Аудитория', type: 'text' },
             { key: 'startDate', label: 'Дата начала (напр. 15 июня 2026)', type: 'text' },
             { key: 'endDate', label: 'Дата завершения (ГГГГ-ММ-ДД)', type: 'text' },
+            { key: 'web_link_url', label: 'Веб-ссылка (Подробнее)', type: 'text' },
             { key: 'image', label: 'Изображение', type: 'image' },
         ],
     },
@@ -43,6 +44,7 @@ export const COLLECTIONS: Record<string, CollectionConfig> = {
             { key: 'endDate', label: 'Дата завершения (ГГГГ-ММ-ДД)', type: 'text' },
             { key: 'title', label: 'Название', type: 'text' },
             { key: 'location', label: 'Место', type: 'text' },
+            { key: 'web_link_url', label: 'Веб-ссылка (Подробнее)', type: 'text' },
         ],
     },
     past_events: {

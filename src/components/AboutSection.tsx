@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Building2, FileText, MapPin, Landmark, Smile, Tent, Route, Heart } from "lucide-react";
-import directorPhoto from "@/assets/director-photo.jpg";
+import orgLogo from "@/assets/logo.png";
 import { useContent } from "@/hooks/useContent";
 
 const iconMap: Record<string, any> = { FileText, Building2, MapPin, Landmark };
@@ -22,9 +22,7 @@ const AboutSection = () => {
   const paragraph2 = content?.paragraph_2 || "Особое внимание уделяем детям из многодетных семей, сиротам и подросткам, оказавшимся в трудной жизненной ситуации. Наша миссия — открыть новые горизонты возможностей для каждого ребёнка через активный и здоровый образ жизни на природе родного Башкортостана.";
   const whyUsTitle = content?.why_us_title || "Почему мы";
   const whyUsText = content?.why_us_text || "Индивидуальные программы под запрос школы, семьи или организации. Мы составляем маршрут и содержание мероприятия именно под ваши потребности, возраст и физическую подготовку участников.";
-  const directorName = content?.director_name || "Насыров Рустам Ралифович";
-  const directorTitle = content?.director_title || "Директор АНО «НОВЫЕ ГОРИЗОНТЫ»";
-  const dirPhoto = content?.director_photo || directorPhoto;
+  const dirPhoto = content?.director_photo || orgLogo;
   const facts = content?.facts || defaultFacts;
 
   return (
@@ -70,11 +68,9 @@ const AboutSection = () => {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <div className="inline-block rounded-2xl overflow-hidden shadow-card mb-4">
-              <img src={dirPhoto} alt={directorName} className="w-56 h-56 object-cover" />
+            <div className="inline-block rounded-2xl overflow-hidden shadow-card mb-4 bg-white p-4">
+              <img src={dirPhoto} alt="АНО НОВЫЕ ГОРИЗОНТЫ" className="w-56 h-56 object-contain" />
             </div>
-            <h3 className="font-heading font-semibold text-lg text-foreground">{directorName}</h3>
-            <p className="text-muted-foreground text-sm">{directorTitle}</p>
           </motion.div>
         </div>
 

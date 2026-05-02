@@ -101,7 +101,9 @@ const ProjectsSection = () => {
           {projects.map((p: any, i: number) => {
             const startDate = p.startDate || "";
             const endDate = p.endDate || "";
-            const remaining = endDate ? getRemainingInfo(endDate) : null;
+            // Use endDate if available, otherwise try using startDate if it's in YYYY-MM-DD format
+            const countdownDate = endDate || (startDate && /^\d{4}-\d{2}-\d{2}$/.test(startDate) ? startDate : "");
+            const remaining = countdownDate ? getRemainingInfo(countdownDate) : null;
             return (
               <motion.div
                 key={p.title}
@@ -145,7 +147,13 @@ const ProjectsSection = () => {
                     <Button
                       size="sm"
                       className="bg-gradient-orange text-accent-foreground font-semibold hover:opacity-90 transition-opacity"
-                      onClick={() => handleOpenModal(p.title)}
+                      onClick={() => {
+                        if (p.web_link_url) {
+                          window.open(p.web_link_url, '_blank');
+                        } else {
+                          handleOpenModal(p.title);
+                        }
+                      }}
                       disabled={remaining?.isEnded}
                     >
                       {remaining?.isEnded ? "Завершено" : "Участвовать"}
@@ -189,6 +197,16 @@ const ProjectsSection = () => {
                   <span className="text-xs text-muted-foreground flex items-center gap-1">
                     <MapPin className="w-3.5 h-3.5" /> {e.location}
                   </span>
+                  {e.web_link_url && (
+                    <a 
+                      href={e.web_link_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-xs text-primary hover:underline font-medium"
+                    >
+                      Подробнее
+                    </a>
+                  )}
                 </div>
               );
             })}
