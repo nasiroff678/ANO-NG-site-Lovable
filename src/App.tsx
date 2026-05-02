@@ -32,7 +32,17 @@ import CookieBanner from "./components/CookieBanner";
 import { Analytics } from "./components/Analytics";
 import { ChatWidget } from "./components/chat/ChatWidget";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+      gcTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

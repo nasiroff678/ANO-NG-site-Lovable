@@ -136,7 +136,8 @@ export function useContentItems(category: string, opts?: { onlyVisible?: boolean
 
             return (data ?? []) as ContentItem[];
         },
-        staleTime: 1000 * 30,
+        staleTime: 0,
+        gcTime: 1000 * 60,
         refetchOnWindowFocus: true,
         refetchOnMount: true,
     });

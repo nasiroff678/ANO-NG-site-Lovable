@@ -26,7 +26,10 @@ export function useNavigation(location?: 'header' | 'footer') {
             if (error) throw error;
             return data as NavigationItem[];
         },
-        staleTime: 1000 * 30, refetchOnWindowFocus: true, refetchOnMount: true,
+        staleTime: 0,
+        gcTime: 1000 * 60,
+        refetchOnWindowFocus: true,
+        refetchOnMount: true,
     });
 
     return { items: data ?? [], isLoading, error };

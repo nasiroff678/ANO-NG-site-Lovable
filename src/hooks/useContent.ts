@@ -22,7 +22,10 @@ export function useContent(sectionId: string) {
             if (error) throw error;
             return data as SiteContent;
         },
-        staleTime: 1000 * 30, refetchOnWindowFocus: true, refetchOnMount: true,
+        staleTime: 0,
+        gcTime: 1000 * 60,
+        refetchOnWindowFocus: true,
+        refetchOnMount: true,
     });
 
     return {
@@ -45,7 +48,10 @@ export function useAllContent() {
             if (error) throw error;
             return data as SiteContent[];
         },
-        staleTime: 1000 * 30, refetchOnWindowFocus: true, refetchOnMount: true,
+        staleTime: 0,
+        gcTime: 1000 * 60,
+        refetchOnWindowFocus: true,
+        refetchOnMount: true,
     });
 
     return { sections: data ?? [], isLoading, error };
